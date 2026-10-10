@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PMO Delivery Agent · Agile by Killette</title>
+<style>
+  :root{
+    --navy:#152a45; --navy-2:#1e3a5f; --gold:#b8913a; --gold-2:#d4b46a;
+    --bg:#f5f6f8; --card:#fff; --text:#1c2733; --muted:#5b6878; --line:#e3e7ec;
+    --green:#1f8a4c; --amber:#c27c0e; --red:#c0392b;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);line-height:1.5}
+  header{background:var(--navy);color:#fff;padding:20px 16px}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+  header .wrap{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .mark{width:44px;height:44px;border-radius:50%;background:var(--gold);color:var(--navy);display:grid;place-items:center;font-weight:800;letter-spacing:.5px;flex:none}
+  header h1{font-size:1.25rem;margin:0}
+  header p{margin:2px 0 0;color:#c9d3e0;font-size:.9rem}
+  .badge{margin-left:auto;font-size:.78rem;border:1px solid var(--gold);color:var(--gold-2);padding:4px 10px;border-radius:999px}
+  nav{background:var(--navy-2);overflow-x:auto}
+  nav .wrap{display:flex;gap:4px}
+  nav button{background:none;border:0;color:#c9d3e0;padding:12px 14px;font:inherit;font-size:.92rem;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap}
+  nav button.active{color:#fff;border-bottom-color:var(--gold)}
+  main.wrap{padding-top:24px;padding-bottom:48px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px;margin-bottom:16px}
+  h2{font-size:1.1rem;margin:0 0 12px}
+  h3{font-size:.98rem;margin:18px 0 8px}
+  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+  .tile{border:1px solid var(--line);border-radius:10px;padding:14px;background:#fff;cursor:pointer}
+  .tile:hover{border-color:var(--gold)}
+  .tile .name{font-weight:650}
+  .muted{color:var(--muted);font-size:.88rem}
+  .rag{display:inline-block;font-size:.75rem;font-weight:700;padding:3px 9px;border-radius:999px;color:#fff;letter-spacing:.4px}
+  .GREEN{background:var(--green)} .AMBER{background:var(--amber)} .RED{background:var(--red)}
+  .pill{display:inline-block;font-size:.75rem;padding:2px 8px;border-radius:6px;background:#eef1f5;color:var(--muted)}
+  .table-wrap{overflow-x:auto}
+  table{border-collapse:collapse;width:100%;font-size:.88rem}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:#f0f2f5;font-weight:650;white-space:nowrap}
+  .callout{border-left:4px solid var(--gold);background:#fbf7ee;padding:12px 14px;border-radius:6px;margin:10px 0}
+  .callout.RED{border-left-color:var(--red);background:#fbefed;color:var(--text)}
+  .callout.AMBER{border-left-color:var(--amber);background:#fdf5e8;color:var(--text)}
+  .callout.GREEN{border-left-color:var(--green);background:#edf7f1;color:var(--text)}
+  select,input,textarea{font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--text);max-width:100%}
+  textarea{width:100%;min-height:80px}
+  .btn{background:var(--navy);color:#fff;border:0;border-radius:8px;padding:9px 16px;font:inherit;cursor:pointer}
+  .btn.gold{background:var(--gold);color:var(--navy);font-weight:650}
+  .btn.ghost{background:#fff;color:var(--navy);border:1px solid var(--navy)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .answer{white-space:pre-wrap;background:#fafbfc;border:1px solid var(--line);border-radius:8px;padding:14px}
+  .gov{font-size:.82rem;color:var(--muted);margin-top:8px}
+  .hidden{display:none}
+  footer{text-align:center;color:var(--muted);font-size:.82rem;padding:20px 16px}
+  footer a{color:var(--navy)}
+  .num{font-variant-numeric:tabular-nums}
+  .examples button{margin:4px 6px 0 0}
+  .draft{border:2px dashed var(--amber);background:#fffaf0}
+  .why{font-size:.8rem;color:var(--muted)}
+  .rv{border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:12px}
+  .rv.PENDING_REVIEW{border-left:4px solid var(--amber)} .rv.APPROVED,.rv.APPROVED_WITH_EDITS{border-left:4px solid var(--green)} .rv.REJECTED{border-left:4px solid var(--red)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="mark">WK</div>
+    <div>
+      <h1>Project Management &amp; Delivery Agent</h1>
+      <p>Enterprise Data Platform Migration · status date <span id="statusDate">…</span></p>
+    </div>
+    <span class="badge">Fictional demo data</span>
+  </div>
+</header>
+<nav><div class="wrap" id="tabs">
+  <button data-tab="portfolio" class="active">Portfolio</button>
+  <button data-tab="report">Executive report</button>
+  <button data-tab="raid">RAID log</button>
+  <button data-tab="resources">Resources</button>
+  <button data-tab="deps">Dependencies</button>
+  <button data-tab="agent">Ask the agent</button>
+  <button data-tab="reviews">Human review <span id="pendingCount" class="pill" style="margin-left:4px">0</span></button>
+  <button data-tab="approvals">Approvals &amp; audit</button>
+  <a href="/governance" style="margin-left:auto;color:var(--gold-2);padding:12px 14px;white-space:nowrap;font-size:.92rem">Governance scorecard ↗</a>
+</div></nav>
+
+<main class="wrap">
+  <section id="portfolio"></section>
+  <section id="report" class="hidden"></section>
+  <section id="raid" class="hidden"></section>
+  <section id="resources" class="hidden"></section>
+  <section id="deps" class="hidden"></section>
+  <section id="agent" class="hidden"></section>
+  <section id="reviews" class="hidden"></section>
+  <section id="approvals" class="hidden"></section>
+</main>
+<footer>
+  A build by <a href="https://agilebykillette.com">Agile by Killette</a> · Every figure comes from a deterministic engine; Claude orchestrates and explains. ·
+  <a href="/docs">API docs</a>
+</footer>
+
+<script>
+const $ = (s, el=document) => el.querySelector(s);
+const esc = v => String(v ?? "—").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const rag = s => `<span class="rag ${esc(s)}">${esc(s)}</span>`;
+const money = v => v == null ? "—" : (Number(v) < 0 ? "-$" : "$") + Math.abs(Number(v)).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+async function api(path, opts){ const r = await fetch(path, opts); const t = await r.text(); let j; try{ j = JSON.parse(t) }catch{ j = t }
+  if(!r.ok) throw new Error((j && j.detail) ? (typeof j.detail === "string" ? j.detail : JSON.stringify(j.detail)) : r.statusText); return j; }
+function table(cols, rows){ return `<div class="table-wrap"><table><thead><tr>${cols.map(c=>`<th>${esc(c[0])}</th>`).join("")}</tr></thead><tbody>${
+  rows.map(r=>`<tr>${cols.map(c=>`<td>${c[1](r)}</td>`).join("")}</tr>`).join("") || `<tr><td colspan="${cols.length}" class="muted">None</td></tr>`}</tbody></table></div>`; }
+
+let projects = [];
+const loaded = {};
+
+document.getElementById("tabs").addEventListener("click", e => {
+  const b = e.target.closest("button"); if(!b) return; show(b.dataset.tab);
+});
+function show(tab){
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+  document.querySelectorAll("main section").forEach(s => s.classList.toggle("hidden", s.id !== tab));
+  if(!loaded[tab] || tab === "reviews"){ loaded[tab] = true; loaders[tab](); }
+}
+
+const loaders = {
+  async portfolio(){
+    const p = await api("/api/portfolio"); projects = p.projects;
+    $("#statusDate").textContent = p.status_date;
+    $("#portfolio").innerHTML = `
+      <div class="card"><div class="row"><h2 style="margin:0">${esc(p.program)}</h2>${rag(p.program_rag)}
+        <span class="muted">${p.counts.GREEN} green · ${p.counts.AMBER} amber · ${p.counts.RED} red</span></div>
+        <p class="muted" style="margin:8px 0 0">Program status is the worst status of any stream. Select a stream for its executive report.</p></div>
+      <div class="grid">${p.projects.map(x => `
+        <div class="tile" data-pid="${esc(x.project_id)}">
+          <div class="row" style="justify-content:space-between"><span class="name">${esc(x.name)}</span>${rag(x.rag)}</div>
+          <div class="muted">${esc(x.project_id)} · Lead: ${esc(x.delivery_lead)}</div>
+          <div class="row num" style="margin-top:8px;gap:14px"><span>SPI <b>${esc(x.spi)}</b></span><span>CPI <b>${esc(x.cpi)}</b></span><span>${esc(x.percent_complete)}% earned</span></div>
+          <div class="muted" style="margin-top:6px">${esc(x.top_reason || "Within tolerance; no critical blockers.")}</div>
+        </div>`).join("")}</div>`;
+    $("#portfolio").querySelectorAll(".tile").forEach(t => t.onclick = () => { show("report"); loadReport(t.dataset.pid); });
+  },
+  async report(){ await ensureProjects(); loadReport(projects.find(p=>p.rag==="AMBER")?.project_id || projects[0].project_id); },
+  async raid(){
+    await ensureProjects();
+    $("#raid").innerHTML = `<div class="card"><div class="row"><h2 style="margin:0">RAID log</h2>
+      <select id="raidFilter"><option value="">All streams</option>${projects.map(p=>`<option value="${esc(p.project_id)}">${esc(p.name)}</option>`).join("")}</select></div>
+      <p class="muted">Exposure = Probability × Impact. LOW 1–6 monthly · MEDIUM 8–12 bi-weekly mitigation · HIGH 15–25 escalate to sponsor. Issues have probability 5 (already happened).</p>
+      <div id="raidBody"></div></div>
+      <div class="card"><h2>Score a risk</h2><div class="row">
+        <label>Probability <select id="sp">${[1,2,3,4,5].map(n=>`<option>${n}</option>`).join("")}</select></label>
+        <label>Impact <select id="si">${[1,2,3,4,5].map(n=>`<option>${n}</option>`).join("")}</select></label>
+        <button class="btn" id="scoreBtn">Score</button><span id="scoreOut"></span></div></div>`;
+    const draw = async () => {
+      const pid = $("#raidFilter").value; const r = await api("/api/raid" + (pid ? `?project_id=${encodeURIComponent(pid)}` : ""));
+      $("#raidBody").innerHTML = table([
+        ["ID", x=>`<b>${esc(x.id)}</b>`], ["Type", x=>esc(x.type)], ["Category", x=>esc(x.category)],
+        ["Description", x=>esc(x.description) + (x.blocker ? ` <span class="pill">${x.critical_path ? "critical-path blocker" : "blocker"}</span>` : "")],
+        ["Prob", x=>esc(x.probability)], ["Imp", x=>esc(x.impact)],
+        ["Score", x=>x.score_label ? `<b>${esc(x.score_label)}</b>` : "—"],
+        ["Mitigation", x=>x.mitigation ? esc(x.mitigation) : `<span style="color:var(--red)">None</span>`],
+        ["Owner", x=>x.owner ? esc(x.owner) : `<span style="color:var(--red)">Unassigned</span>`], ["Status", x=>esc(x.status)],
+        ["Why this score", x=>`<span class="why">${esc(x.explanation.reasoning)}</span>`]
+      ], r.items);
+    };
+    $("#raidFilter").onchange = draw; draw();
+    $("#scoreBtn").onclick = async () => {
+      const r = await api("/api/risk/score", {method:"POST", headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({probability:+$("#sp").value, impact:+$("#si").value})});
+      $("#scoreOut").innerHTML = `<b>${esc(r.label)}</b> — ${esc(r.action)}<div class="why">${esc(r.explanation.reasoning)}</div>`;
+    };
+  },
+  async resources(){
+    const r = await api("/api/resources");
+    $("#resources").innerHTML = `
+      <div class="card"><h2>Utilisation across streams</h2><p class="muted">${r.summary.overallocated} overallocated · ${r.summary.underutilised} under 50% · ${r.summary.skills_gaps} skills gaps · ${r.summary.single_points_of_failure} single points of failure</p>
+      ${table([["Person",x=>`<b>${esc(x.name)}</b><div class="muted">${esc(x.role)}</div>`],["Assigned / capacity",x=>`<span class="num">${esc(x.assigned_hours)} / ${esc(x.capacity_hours)} h</span>`],
+        ["Utilisation",x=>`<span class="num">${esc(x.utilisation_pct)}%</span>`],["Streams",x=>esc(x.projects.join(", "))],
+        ["Flag",x=>x.flag==="OVERALLOCATED"?`<span class="rag RED">OVER +${esc(x.over_by_hours)}h</span>`:x.flag==="UNDERUTILISED"?`<span class="rag AMBER">UNDER</span>`:`<span class="pill">OK</span>`]], r.utilisation)}</div>
+      <div class="card"><h2>Single points of failure</h2>${table([["Skill",x=>`<b>${esc(x.skill)}</b>`],["Only holder",x=>esc(x.name)],["Streams depending",x=>esc(x.projects_depending.join(", "))],["Severity",x=>x.severity==="CRITICAL"?rag("RED").replace(">RED<",">CRITICAL<"):`<span class="pill">${esc(x.severity)}</span>`]], r.single_points_of_failure)}</div>
+      <div class="card"><h2>Skills gaps</h2>${table([["Stream",x=>esc(x.project_id)],["Skill",x=>esc(x.skill)],["FTE needed",x=>esc(x.fte_needed)],["FTE assigned",x=>esc(x.fte_assigned)],["Short",x=>`<b>${esc(x.fte_short)}</b>`]], r.skills_gaps)}</div>`;
+  },
+  async deps(){
+    const r = await api("/api/dependencies");
+    const st = s => s==="CONFLICT"?rag("RED").replace(">RED<",">CONFLICT<"):s==="AT_RISK"?rag("AMBER").replace(">AMBER<",">AT RISK<"):`<span class="pill">${esc(s.replace("_"," "))}</span>`;
+    $("#deps").innerHTML = `<div class="card"><h2>Cross-project dependencies</h2>
+      <p class="muted">Conflict = provider milestone lands after the consumer needs it. At risk = under 5 days of float.</p>
+      ${table([["ID",x=>esc(x.id)],["Consumer needs",x=>`<b>${esc(x.consumer_project_id)}</b> ← ${esc(x.provider_project_id)}<div class="muted">${esc(x.description)}</div>`],
+        ["Provider milestone",x=>esc(x.provider_milestone)],["Needed by",x=>esc(x.needed_by)],["Provider date",x=>esc(x.provider_date)],
+        ["Float (days)",x=>`<span class="num">${esc(x.float_days)}</span>`],["Status",x=>st(x.status)]], r.dependencies)}
+      <p class="muted">Circular dependencies: ${r.cycles.length ? esc(r.cycles.map(c=>c.join(" → ")).join("; ")) : "none detected"}</p></div>`;
+  },
+  async agent(){
+    const h = await api("/health");
+    const ex = ["Which streams need executive intervention, and why?","Who is overallocated and what single points of failure put the program at risk?",
+      "Summarize the Data Migration stream for the steering committee.","What happens to delivery if the Wave 2 cutover slips again?"];
+    $("#agent").innerHTML = `<div class="card"><h2>Ask the PMO agent</h2>
+      ${h.agent_enabled ? "" : `<div class="callout AMBER">The Claude agent is not enabled on this instance (no API key). Every other tab works — they are the deterministic engines the agent would call.</div>`}
+      <p class="muted">Claude chooses which engine to call and explains the result. It cannot change data, cannot send anything, and every number it states is checked against the tool results.</p>
+      <textarea id="q" placeholder="Ask about RAG status, risks, milestones, resources or dependencies…"></textarea>
+      <input id="askedBy" placeholder="Your name (optional, logged with the request)" style="margin-top:8px;width:320px">
+      <div class="examples">${ex.map(e=>`<button class="btn ghost" type="button">${esc(e)}</button>`).join("")}</div>
+      <div class="row" style="margin-top:10px"><button class="btn gold" id="askBtn" ${h.agent_enabled?"":"disabled"}>Ask</button><span id="askStatus" class="muted"></span></div>
+      <div id="ans" style="margin-top:14px"></div></div>`;
+    $("#agent .examples").onclick = e => { const b = e.target.closest("button"); if(b) $("#q").value = b.textContent; };
+    $("#askBtn").onclick = async () => {
+      const q = $("#q").value.trim(); if(q.length < 3) return;
+      $("#askStatus").textContent = "Thinking… (the free instance may take a moment)"; $("#ans").innerHTML = "";
+      try{
+        const r = await api("/api/agent/ask", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({question:q, requested_by: $("#askedBy").value.trim()})});
+        $("#ans").innerHTML = `<div class="callout AMBER"><b>DRAFT · PENDING_REVIEW (#${esc(r.review_id)}).</b> This AI output is not validated. A named human must approve, edit or reject it on the Human review tab before it is published.</div>
+          <div class="answer draft">${esc(r.draft_answer)}</div>
+          <div class="gov">Engines called: ${r.tools_used.map(t=>esc(t.tool)).join(", ") || "none"} ·
+          Numeric grounding: ${r.grounded ? "✅ every number traced to an engine result" : "⚠️ unverified numbers: " + esc(r.unverified_numbers.join(", ")) + " (cannot be approved unchanged)"} ·
+          Tokens: ${esc(r.usage.input_tokens)} in / ${esc(r.usage.output_tokens)} out</div>
+          <div class="row" style="margin-top:8px"><button class="btn" id="goReview">Review it now</button></div>`;
+        $("#goReview").onclick = () => { loaded.reviews = false; show("reviews"); };
+        refreshPending();
+        $("#askStatus").textContent = "";
+      }catch(err){ $("#askStatus").textContent = "Error: " + err.message; }
+    };
+  },
+  async reviews(){
+    $("#reviews").innerHTML = `<div class="card"><div class="row" style="justify-content:space-between"><h2 style="margin:0">Human review of AI output</h2>
+      <select id="rvFilter"><option value="PENDING_REVIEW">Pending review</option><option value="">All</option><option value="APPROVED">Approved</option><option value="APPROVED_WITH_EDITS">Approved with edits</option><option value="REJECTED">Rejected</option></select></div>
+      <p class="muted">Every AI output starts <b>PENDING_REVIEW</b> and is never published until a named human approves it, edits then approves it, or rejects it with a reason. Decisions are final. The AI, the agent and automated systems are refused as reviewers. Outputs with unverified numbers cannot be approved unchanged.</p>
+      <div class="row"><label>Reviewer <input id="rvName" placeholder="Your full name"></label></div>
+      <div id="rvList" style="margin-top:14px"></div></div>`;
+    $("#rvFilter").onchange = drawReviews; drawReviews();
+  },
+  async approvals(){
+    const [acts, aud] = await Promise.all([api("/api/actions"), api("/api/audit?limit=30")]);
+    $("#approvals").innerHTML = `<div class="card"><h2>Pending outbound actions</h2>
+      <p class="muted">Nothing leaves this service without a named human approver. The agent can only propose.</p>
+      ${table([["#",x=>esc(x.id)],["Action",x=>esc(x.action_type)],["Stream",x=>esc(x.project_id)],["Requested by",x=>esc(x.requested_by)],["Status",x=>esc(x.status)],
+        ["Decision",x=>x.status==="PENDING"?`<button class="btn" data-a="${x.id}" data-ok="1">Approve</button> <button class="btn ghost" data-a="${x.id}" data-ok="0">Reject</button>`:esc(x.result)]], acts)}
+      </div><div class="card"><h2>Audit trail</h2>${table([["When",x=>esc(x.at.replace("T"," ").slice(0,19))],["Actor",x=>esc(x.actor)],["Event",x=>esc(x.event)],["Detail",x=>`<code>${esc(JSON.stringify(x.detail))}</code>`]], aud)}</div>`;
+    $("#approvals").querySelectorAll("button[data-a]").forEach(b => b.onclick = async () => {
+      const who = prompt("Your name (recorded as the approver):"); if(!who) return;
+      let reason = "";
+      if(b.dataset.ok !== "1"){ reason = prompt("Reason for rejecting (required):") || ""; if(!reason) return; }
+      try{ await api(`/api/actions/${b.dataset.a}/decision`, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({approve: b.dataset.ok==="1", decided_by: who, reason})}); }
+      catch(err){ alert(err.message); }
+      loaders.approvals();
+    });
+  },
+};
+
+async function refreshPending(){
+  try{ const g = await api("/api/governance"); $("#pendingCount").textContent = g.human_validation.pending_review; }catch{}
+}
+
+async function drawReviews(){
+  const st = $("#rvFilter").value;
+  const rows = await api("/api/reviews" + (st ? `?status=${st}` : ""));
+  $("#rvList").innerHTML = rows.map(r => `<div class="rv ${esc(r.status)}" data-id="${r.id}">
+    <div class="row" style="justify-content:space-between"><b>#${esc(r.id)} · ${esc(r.kind.replace("_"," "))}${r.project_id ? " · " + esc(r.project_id) : ""}</b>
+      <span class="pill">${esc(r.status)}</span></div>
+    <div class="muted">Prompt: ${esc(r.prompt.slice(0,200))}${r.requested_by ? " · asked by " + esc(r.requested_by) : ""} · ${esc(r.model)} · tools: ${esc(r.tools_used.join(", ") || "none")}</div>
+    <div class="gov">${r.grounded ? "✅ All numbers traced to engine results" : "⚠️ Unverified numbers: " + esc(r.unverified_numbers.join(", ")) + ". Edit them out or reject."}</div>
+    <div class="answer ${r.status === "PENDING_REVIEW" ? "draft" : ""}" style="margin-top:8px">${esc(r.ai_output)}</div>
+    ${r.status === "PENDING_REVIEW" ? `
+      <textarea class="rvEdit" style="margin-top:8px" placeholder="Optional: edit the text here, then choose Edit & approve"></textarea>
+      <input class="rvReason" placeholder="Reason (required to reject; optional note for edits)" style="width:100%;margin-top:6px">
+      <div class="row" style="margin-top:8px">
+        <button class="btn gold" data-d="approve" ${r.grounded ? "" : "disabled title='Unverified numbers: edit or reject'"}>Approve</button>
+        <button class="btn" data-d="edit">Edit &amp; approve</button>
+        <button class="btn ghost" data-d="reject">Reject</button><span class="rvMsg muted"></span></div>` : `
+      ${r.status === "APPROVED_WITH_EDITS" ? `<div class="muted" style="margin-top:8px">Published (edited) text:</div><div class="answer">${esc(r.final_output)}</div>` : ""}
+      <div class="gov">${esc(r.status.replace(/_/g," ").toLowerCase())} by <b>${esc(r.reviewer)}</b> at ${esc((r.decided_at||"").replace("T"," ").slice(0,19))} UTC${r.reason ? " · reason: " + esc(r.reason) : ""}</div>`}
+  </div>`).join("") || `<p class="muted">Nothing here.</p>`;
+  $("#rvList").querySelectorAll("button[data-d]").forEach(b => b.onclick = async () => {
+    const card = b.closest(".rv"), msg = card.querySelector(".rvMsg");
+    const reviewer = $("#rvName").value.trim();
+    if(!reviewer){ msg.textContent = "Enter your name as reviewer first."; return; }
+    const body = {decision: b.dataset.d, reviewer, reason: card.querySelector(".rvReason").value.trim() || null};
+    if(b.dataset.d === "edit") body.edited_output = card.querySelector(".rvEdit").value;
+    try{ await api(`/api/reviews/${card.dataset.id}/decision`, {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify(body)});
+      drawReviews(); refreshPending(); }
+    catch(err){ msg.textContent = err.message; }
+  });
+}
+
+async function ensureProjects(){ if(!projects.length){ const p = await api("/api/portfolio"); projects = p.projects; $("#statusDate").textContent = p.status_date; } }
+
+async function loadReport(pid){
+  loaded.report = true;
+  const r = await api(`/api/projects/${encodeURIComponent(pid)}/status-report`);
+  $("#report").innerHTML = `<div class="card">
+    <div class="row" style="justify-content:space-between"><select id="repSel">${projects.map(p=>`<option value="${esc(p.project_id)}" ${p.project_id===pid?"selected":""}>${esc(p.name)}</option>`).join("")}</select>
+      <div class="row"><a class="btn ghost" href="/api/projects/${encodeURIComponent(pid)}/status-report?format=markdown" target="_blank" rel="noopener">Markdown</a>
+      <button class="btn ghost" id="draftSummary">Draft AI summary</button>
+      <button class="btn gold" id="queueSlack">Queue Slack digest</button></div></div>
+    <h2 style="margin-top:16px">${esc(r.title)}</h2>
+    <div class="muted">Reporting period ${esc(r.reporting_period)} · Sponsor ${esc(r.sponsor)} · Delivery lead ${esc(r.delivery_lead)}</div>
+    <p>Overall RAG status: ${rag(r.overall_rag)}</p>
+    <div class="callout ${esc(r.overall_rag)}"><b>Executive summary.</b> ${esc(r.executive_summary)}</div>
+    <h3>Key performance indicators</h3>
+    ${table([["KPI",k=>esc(k.kpi)],["Target",k=>esc(k.target)],["Actual",k=>`<b class="num">${esc(k.actual)}</b>`],["Variance / status",k=>`${rag(k.status)} <span class="muted">${esc(k.variance)}</span>`],
+      ["How it's calculated",k=>k.explanation ? `<div class="why"><b>${esc(k.explanation.formula)}</b><br>${esc(k.explanation.reasoning)}</div>` : ""]], r.kpis)}
+    <h3>Key accomplishments</h3><ul>${r.key_accomplishments.map(a=>`<li>${esc(a)}</li>`).join("") || "<li class='muted'>None reported</li>"}</ul>
+    <h3>Upcoming milestones (30 days)</h3>${table([["Milestone",m=>esc(m.name)],["Baseline",m=>esc(m.baseline_date)],["Forecast",m=>esc(m.forecast_date)],["Critical path",m=>m.critical_path?"Yes":"No"],["Owner",m=>esc(m.owner)]], r.upcoming_milestones)}
+    ${r.overdue_milestones.length ? `<h3>Overdue milestones</h3>${table([["Milestone",m=>esc(m.name)],["Forecast",m=>esc(m.forecast_date)],["Days overdue",m=>`<b>${esc(m.days_overdue)}</b>`],["Owner",m=>esc(m.owner)]], r.overdue_milestones)}` : ""}
+    <h3>Blockers requiring intervention</h3>${r.blockers_requiring_intervention.length ? r.blockers_requiring_intervention.map(b=>`<div class="callout RED"><b>${esc(b.id)}</b> — ${esc(b.description)} <span class="muted">(${esc(b.why)}; owner ${esc(b.owner || "UNASSIGNED")})</span></div>`).join("") : "<p class='muted'>None.</p>"}
+    <h3>Why this status</h3><ul>${r.rag_reasons.map(x=>`<li>${rag(x.status)} ${esc(x.message)}</li>`).join("") || "<li class='muted'>All criteria within tolerance.</li>"}</ul>
+    <p class="why"><b>Rule:</b> ${esc(r.rag_explanation.formula)}<br><b>Result:</b> ${esc(r.rag_explanation.reasoning)}</p>
+    <h3>Earned value</h3>${table([["BAC",e=>money(e.bac)],["PV",e=>money(e.pv)],["EV",e=>money(e.ev)],["AC",e=>money(e.ac)],["SV",e=>money(e.sv)],["CV",e=>money(e.cv)],["EAC",e=>money(e.eac)],["VAC",e=>money(e.vac)],["SV (days)",e=>esc(e.sv_days)]], [r.evm])}
+    <p class="gov">Summary source: ${esc(r.summary_source)}. All figures from deterministic engines.</p>
+    <div id="queueMsg"></div></div>`;
+  $("#repSel").onchange = e => loadReport(e.target.value);
+  $("#draftSummary").onclick = async () => {
+    try{
+      const d = await api(`/api/projects/${encodeURIComponent(pid)}/status-report?narrative=true`);
+      $("#queueMsg").innerHTML = d.narrative_review
+        ? `<div class="callout AMBER">Claude drafted a summary (#${esc(d.narrative_review.id)}). It is <b>PENDING_REVIEW</b> and is not in this report until a human approves it on the Human review tab. Once approved, open <a href="/api/projects/${encodeURIComponent(pid)}/status-report?narrative_review=${esc(d.narrative_review.id)}&format=markdown" target="_blank" rel="noopener">the report with the approved summary</a>.</div>`
+        : `<div class="callout">${esc(d.summary_source)}</div>`;
+      refreshPending(); loaded.reviews = false;
+    }catch(err){ $("#queueMsg").innerHTML = `<div class="callout RED">${esc(err.message)}</div>`; }
+  };
+  $("#queueSlack").onclick = async () => {
+    const a = await api("/api/actions", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({action_type:"POST_SLACK_DIGEST", project_id: pid, requested_by:"console user"})});
+    $("#queueMsg").innerHTML = `<div class="callout">Queued as action #${esc(a.id)} — it will not be sent until a named approver approves it on the Approvals tab.</div>`;
+    loaded.approvals = false;
+  };
+}
+
+loaders.portfolio(); loaded.portfolio = true; refreshPending();
+</script>
+</body>
+</html>
